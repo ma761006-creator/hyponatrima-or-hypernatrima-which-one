@@ -270,6 +270,8 @@
   input.invalid { border-color: var(--crit); }
   .hint { font: 400 11.5px/1.4 var(--sans); color: var(--muted); }
   .hint.error { color: var(--crit); }
+  .hint.caveat { color: var(--ink-2); }
+  .hint b { font-weight: 500; color: var(--ink-2); }
 
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 360px) { .row-2 { grid-template-columns: 1fr; } }
@@ -528,7 +530,15 @@
             <label><input type="radio" name="hypo-vol" value="euvolemic" checked>正常</label>
             <label><input type="radio" name="hypo-vol" value="hypervolemic">高容積</label>
           </div>
-          <p class="hint">脫水低血壓／無水腫無脫水／水腫腹水 JVD</p>
+          <p class="hint">
+            <b>低容積</b> · 姿勢性低血壓、心跳快、黏膜與腋下乾、頸靜脈塌陷<br>
+            <b>正常</b> · 無水腫，也無上述脫水徵象<br>
+            <b>高容積</b> · 凹陷性水腫、腹水、頸靜脈怒張
+          </p>
+          <p class="hint caveat">
+            水腫代表 ECF 總量過多，不代表有效循環血量足夠。心衰竭、肝硬化、腎病症候群兩者並存，
+            腎臟仍以缺水的方式反應，故高容積仍須以 U<sub>Na</sub> 再區分。
+          </p>
         </div>
         <div class="row-2">
           <div class="field">
@@ -574,6 +584,11 @@
             <label><input type="radio" name="hyper-vol" value="euvolemic" checked>正常</label>
             <label><input type="radio" name="hyper-vol" value="hypervolemic">高容積</label>
           </div>
+          <p class="hint">
+            <b>低容積</b> · 失水大於失鈉，合併脫水徵象<br>
+            <b>正常</b> · 純水分流失，無明顯水腫或脫水<br>
+            <b>高容積</b> · 鈉過剩，多為醫源性高張輸液
+          </p>
         </div>
         <div class="field">
           <label for="hyper-uosm">尿滲透壓 U<sub>osm</sub> <span class="unit">mOsm/kg</span></label>
