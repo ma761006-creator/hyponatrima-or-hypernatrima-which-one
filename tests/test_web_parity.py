@@ -70,9 +70,11 @@ def assert_parity(url, fn_name, cases):
 
 
 def test_hyponatremia_parity():
+    # 低血鈉端點的輸出不含 TBW，也不因病人資料而異（下方的 independence 測試把關），
+    # 因此這裡只取兩組病人做交叉驗證，把格點留給真正影響判讀的臨床維度。
     cases = []
     for patient, posm, volume, u_na, u_osm, endo in product(
-        PATIENTS,
+        PATIENTS[:2],
         [250, 260, 274.9, 275, 285, 295, 295.1, 320],
         ["hypovolemic", "euvolemic", "hypervolemic"],
         [None, 0, 19.9, 20, 56, 300],
@@ -92,8 +94,23 @@ def test_hyponatremia_parity():
                 "cortisol_normal": endo[1],
             }
         )
-    assert len(cases) > 4000
+    assert len(cases) > 3000
     assert_parity(HYPO_URL, "evaluateHyponatremia", cases)
+
+
+def test_hyponatremia_output_is_independent_of_patient_profile():
+    """支撐上面縮減格點的前提：病人資料不進入低血鈉的判讀或輸出。"""
+    base = {
+        "measured_na": 121.5,
+        "glucose": 110,
+        "posm": 260,
+        "volume_status": "euvolemic",
+        "u_osm": 410,
+    }
+    results = [
+        client.post(HYPO_URL, json=dict(base, patient=patient)).json() for patient in PATIENTS
+    ]
+    assert all(r == results[0] for r in results)
 
 
 def test_hyponatremia_glucose_correction_parity():
